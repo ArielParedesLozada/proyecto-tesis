@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Energy Control System — Dashboard</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="app">
+
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">ECS</div>
+        <div>
+          <h1>Energy Control System</h1>
+          <p class="subtitle">Predicción y control operacional · Plasticaucho</p>
+        </div>
+      </div>
+      <div class="machine">
+        <div class="machine-info">
+          <span class="machine-id" id="machine-id">—</span>
+          <span class="machine-desc" id="machine-desc">—</span>
+        </div>
+        <span class="badge" id="machine-state">—</span>
+      </div>
+    </header>
+
+    <section class="kpi-grid">
+      <article class="card kpi">
+        <label>Consumo actual</label>
+        <div class="value" id="kpi-current">—</div>
+        <div class="unit">kWh · hora en curso</div>
+      </article>
+      <article class="card kpi">
+        <label>Consumo del turno · <span id="kpi-shift-name" class="tag">—</span></label>
+        <div class="value" id="kpi-shift">—</div>
+        <div class="unit">kWh acumulados · restan <span id="kpi-shift-remaining">—</span></div>
+      </article>
+      <article class="card kpi">
+        <label>Predicción siguiente turno · <span id="kpi-pred-shift" class="tag">—</span></label>
+        <div class="value accent" id="kpi-prediction">—</div>
+        <div class="unit">kWh estimados · intervalo <span id="kpi-pred-range" class="mono">—</span></div>
+      </article>
+      <article class="card kpi">
+        <label>Límite superior</label>
+        <div class="value limit-upper" id="kpi-upper">—</div>
+        <div class="unit">kWh · banda de control</div>
+      </article>
+      <article class="card kpi">
+        <label>Límite inferior</label>
+        <div class="value limit-lower" id="kpi-lower">—</div>
+        <div class="unit">kWh · banda de control</div>
+      </article>
+      <article class="card kpi status-card" id="status-card">
+        <label>Estado operacional</label>
+        <div class="value status-value" id="kpi-status">—</div>
+        <div class="unit" id="kpi-status-detail">—</div>
+      </article>
+    </section>
+
+    <section class="card chart-card">
+      <div class="card-header">
+        <h2>Consumo energético · histórico y predicción</h2>
+        <div class="legend" id="legend"></div>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="chart"></canvas>
+        <div id="tooltip" class="tooltip hidden"></div>
+      </div>
+    </section>
+
+    <section class="bottom-grid">
+      <article class="card">
+        <h2>Detalle de la predicción</h2>
+        <div class="prediction-detail" id="prediction-detail">
+          <div class="prediction-row"><span class="prediction-label">Turno</span><span class="prediction-value" id="pred-shift">—</span></div>
+          <div class="prediction-row"><span class="prediction-label">Horizonte</span><span class="prediction-value" id="pred-horizon">—</span></div>
+          <div class="prediction-row"><span class="prediction-label">Consumo estimado</span><span class="prediction-value" id="pred-consumption">—</span></div>
+          <div class="prediction-row"><span class="prediction-label">Intervalo de la banda</span><span class="prediction-value" id="pred-interval">—</span></div>
+          <div class="prediction-row"><span class="prediction-label">Estado</span><span class="prediction-value" id="pred-status">—</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <h2>Condiciones actuales</h2>
+        <table class="conditions">
+          <tbody>
+            <tr><td>Temperatura</td><td id="cond-temperature">—</td></tr>
+            <tr><td>Producción</td><td id="cond-production">—</td></tr>
+            <tr><td>Carga de máquina</td><td id="cond-load">—</td></tr>
+            <tr><td>Estado de máquina</td><td id="cond-state">—</td></tr>
+            <tr><td>Registro</td><td id="cond-timestamp">—</td></tr>
+            <tr><td>Último turno completo</td><td id="cond-last-shift">—</td></tr>
+          </tbody>
+        </table>
+      </article>
+    </section>
+
+    <footer class="footer">
+      <span>Datos simulados · semilla fija 42 · actualizado <span id="footer-updated" class="mono">—</span></span>
+      <span class="footer-controls">
+        <span class="mono" id="auto-refresh-label">auto-refresh 10 s</span>
+        <button id="btn-refresh" class="btn">Actualizar ahora</button>
+      </span>
+    </footer>
+
+  </div>
+
+  <script src="/chart.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
