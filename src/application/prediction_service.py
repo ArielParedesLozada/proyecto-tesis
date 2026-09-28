@@ -33,10 +33,14 @@ class PredictionService:
         model: EnergyPredictionModel,
         limits_calculator: ControlLimitCalculator,
         data_source: EnergyDataSource,
+        machine_id: str = "Máquina 01",
+        machine_description: str = "Inyectora de suelas — Línea A",
     ):
         self._model = model
         self._limits_calculator = limits_calculator
         self._data_source = data_source
+        self._machine_id = machine_id
+        self._machine_description = machine_description
 
     def dashboard(self, now: datetime | None = None) -> DashboardData:
         """Snapshot completo para el dashboard: historial + predicción + límites."""
@@ -120,8 +124,8 @@ class PredictionService:
 
     @property
     def machine_id(self) -> str:
-        return "Máquina 01"
+        return self._machine_id
 
     @property
     def machine_description(self) -> str:
-        return "Inyectora de suelas — Línea A"
+        return self._machine_description

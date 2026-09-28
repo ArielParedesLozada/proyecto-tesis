@@ -1,43 +1,42 @@
 """API HTTP del prototipo (FastAPI) + frontend estático.
 
 Sirve los endpoints JSON descritos en el README y el dashboard en "/".
+
+Dos modos de datos, seleccionados con la variable de entorno
+`ENERGY_DATA_MODE` (ver `src/demo/wiring.py`):
+
+- `aep` (por defecto): DEMO con el dataset real de AEP (Kaggle), un modelo
+  HistGradientBoosting de scikit-learn y bandas de control Shewhart.
+- `mock`: los datos simulados originales.
 """
 
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
-from src.application.prediction_service import PredictionService
-from src.data.mock_data import MockDataRepository
-from src.mocks.mock_control_limits import MockControlLimitCalculator
-from src.mocks.mock_prediction_model import MockEnergyPredictionModel
+from src.demo.wiring import build_service, current_mode
+
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s %(levelname)-7s %(name)s | %(message)s"
+)
+LOGGER = logging.getLogger("api")
 
 WEB_DIR = Path(__file__).resolve().parent.parent / "web"
 
 # ---------------------------------------------------------------------------
 # Wiring de componentes.
 # ---------------------------------------------------------------------------
-# PUNTO DE SUSTITUCIÓN DE MOCKS POR MODELOS REALES.
-# Para conectar el sistema real solo hay que cambiar estas tres líneas:
-#
-#   data_source       = RealDataSource(...)                  # registros reales
-#   model             = RandomForestEnergyModel(...)         # Statistical/XGB/LSTM...
-#   limits_calculator = StatisticalControlLimitCalculator(...)
-#
-# El servicio, la API y el frontend no necesitan ningún cambio.
+# Las implementaciones se eligen en src/demo/wiring.py; la API y el frontend no
+# dependen de ninguna clase concreta. Para conectar el sistema real alcanza con
+# registrar otra fuente de datos / modelo / calculadora de límites que cumpla las
+# interfaces de src/domain.
 # ---------------------------------------------------------------------------
-data_source = MockDataRepository()
-model = MockEnergyPredictionModel()
-limits_calculator = MockControlLimitCalculator()
-
-service = PredictionService(
-    model=model,
-    limits_calculator=limits_calculator,
-    data_source=data_source,
-)
+service = build_service()
+LOGGER.info("Wiring listo (modo=%s)", current_mode())
 # ---------------------------------------------------------------------------
 
 app = FastAPI(
