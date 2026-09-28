@@ -230,3 +230,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Mine
+
+.opencode/
+artifacts/
+data/
