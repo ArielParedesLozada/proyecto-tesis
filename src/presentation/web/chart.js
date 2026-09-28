@@ -128,10 +128,13 @@ class EnergyChart {
     const rect = this.canvas.getBoundingClientRect();
     const m = { top: 22, right: 18, bottom: 32, left: 62 };
     const plotWidth = Math.max(1, rect.width - m.left - m.right);
-    const plotHeight = Math.max(1, this.canvas.height - m.top - m.bottom);
+    const plotHeight = Math.max(1, rect.height - m.top - m.bottom);   // rect.height, no canvas.height
     const span = Math.max(1, this.model.length - 1);
     return {
       ...m,
+      plotLeft: m.left,
+      plotTop: m.top,
+      plotRight: m.left + plotWidth,
       plotWidth,
       plotHeight,
       pxPerPoint: plotWidth / span,

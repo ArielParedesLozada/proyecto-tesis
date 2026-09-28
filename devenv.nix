@@ -10,11 +10,7 @@
   };
   languages.python = {
     enable = true;
-    package = pkgs.python312.withPackages (ps: [
-      ps.numpy
-      ps.pandas
-      
-    ]);
+    package = pkgs.python312;
     venv.enable = true;
     uv.enable = true;
 

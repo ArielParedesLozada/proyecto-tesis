@@ -25,7 +25,7 @@ const LEGEND = [
 
 const $ = (id) => document.getElementById(id);
 const fmt1 = (v) => Number(v).toFixed(1);
-const pad2 = (n) => String(n).padStart(2, "0");
+// const pad2 = (n) => String(n).padStart(2, "0");
 
 function fmtTime(iso) {
   const d = new Date(iso);
@@ -38,7 +38,7 @@ function fmtHorizon(startIso, endIso) {
   return `${pad2(a.getHours())}:${pad2(a.getMinutes())} – ${pad2(b.getHours())}:${pad2(b.getMinutes())}`;
 }
 
-const chart = new EnergyChart($("chart"), $("tooltip"));
+const energyChart = new EnergyChart($("chart"), $("tooltip"));
 
 renderLegend();
 
@@ -95,7 +95,7 @@ function renderDashboard(data) {
   $("cond-last-shift").textContent = `${data.previous_shift} · ${fmt1(data.previous_shift_consumption)} kWh`;
 
   // Gráfico
-  chart.render(data);
+  energyChart.render(data);
 
   // Footer
   $("footer-updated").textContent = fmtTime(data.generated_at);
